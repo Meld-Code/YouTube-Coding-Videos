@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live CSS Design Viewer</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background: #101014;
+      color: white;
+    }
+
+    header {
+      padding: 20px;
+      text-align: center;
+      background: #17171d;
+      border-bottom: 1px solid #33333d;
+    }
+
+    header h1 {
+      margin: 0;
+      color: #00d9ff;
+      font-size: 28px;
+    }
+
+    header p {
+      margin: 8px 0 0;
+      color: #aaa;
+    }
+
+    .app {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: calc(100vh - 100px);
+    }
+
+    .editor-section,
+    .preview-section {
+      padding: 24px;
+    }
+
+    .editor-section {
+      background: #121218;
+      border-right: 1px solid #33333d;
+    }
+
+    .preview-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle, #24243a, #101014 70%);
+    }
+
+    h2 {
+      margin-top: 0;
+      color: #00d9ff;
+    }
+
+    textarea {
+      width: 100%;
+      height: 430px;
+      resize: vertical;
+      padding: 16px;
+      border: 1px solid #3e3e4b;
+      border-radius: 12px;
+      outline: none;
+      background: #09090d;
+      color: #b8f5ff;
+      font-family: Consolas, monospace;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    textarea:focus {
+      border-color: #00d9ff;
+      box-shadow: 0 0 15px #00d9ff44;
+    }
+
+    .preview-box {
+      width: min(420px, 90%);
+      min-height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+      border: 2px dashed #55556b;
+      border-radius: 18px;
+    }
+
+    .design-card {
+      width: 230px;
+      padding: 28px 20px;
+      text-align: center;
+      border-radius: 22px;
+      background: linear-gradient(135deg, #00d9ff, #6c2cff);
+      box-shadow: 0 15px 35px #0008;
+      transition: 0.3s ease;
+    }
+
+    .design-card:hover {
+      transform: translateY(-10px) rotate(2deg);
+      box-shadow: 0 20px 45px #00d9ff66;
+    }
+
+    .design-card h3 {
+      margin: 0 0 12px;
+      font-size: 24px;
+    }
+
+    .design-card p {
+      margin: 0 0 20px;
+      color: #e9faff;
+    }
+
+    .design-card button {
+      padding: 12px 18px;
+      border: none;
+      border-radius: 999px;
+      background: white;
+      color: #17171d;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .design-card button:hover {
+      transform: scale(1.1);
+      background: #111;
+      color: white;
+    }
+
+    .status {
+      margin-top: 16px;
+      color: #7dffb2;
+      font-size: 14px;
+    }
+
+    @media (max-width: 800px) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+
+      .editor-section {
+        border-right: none;
+        border-bottom: 1px solid #33333d;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Live CSS Design Viewer</h1>
+    <p>Edit the CSS and watch the design update automatically.</p>
+  </header>
+  <main class="app">
+    <section class="editor-section">
+      <h2>CSS Editor</h2>
+  <textarea id="cssEditor">.design-card {
+
+background: linear-gradient(135deg, #00d9ff, #6c2cff);
+border-radius: 22px;
+transform: rotate(0deg);
+}
+.design-card:hover {
+transform: translateY(-10px) rotate(2deg);
+box-shadow: 0 20px 45px #00d9ff66;
+}</textarea>
+  <div class="status" id="status">
+    Preview updates automatically
+  </div>
+</section>
+
+<section class="preview-section">
+  <h2>Live Preview</h2>
+
+  <div class="preview-box">
+    <div class="design-card">
+      <h3>Cool CSS</h3>
+      <p>Hover over me!</p>
+      <button>Click Me</button>
+    </div>
+  </div>
+</section>
+
+  </main>
+  <style id="liveStyles"></style>
+  <script>
+    const cssEditor = document.getElementById("cssEditor");
+    const liveStyles = document.getElementById("liveStyles");
+    const status = document.getElementById("status");
+
+    function updatePreview() {
+      liveStyles.textContent = cssEditor.value;
+      status.textContent = "Preview updated automatically ✓";
+    }
+
+    cssEditor.addEventListener("input", updatePreview);
+
+    updatePreview();
+  </script>
+</body>
+</html>
