@@ -1,210 +1,265 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Live CSS Design Viewer</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSS Button Sandbox</title>
 
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #0b0b0e;
+    color: white;
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    padding: 25px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.logo {
+    font-size: 21px;
+    font-weight: 800;
+}
+
+.logo span {
+    color: #ff7a24;
+}
+
+.tag {
+    color: #888;
+    font-size: 12px;
+}
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+}
+
+.preview {
+    height: 340px;
+    background: #111115;
+    border: 1px solid #26262d;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.preview-label {
+    color: #777;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+#demoButton {
+    cursor: pointer;
+    border: none;
+    background: #25252b;
+    color: white;
+    padding: 13px 27px;
+    border-radius: 7px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.editor {
+    background: #111115;
+    border: 1px solid #26262d;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.editor-header {
+    padding: 15px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #26262d;
+}
+
+.editor-header span {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.editor-header small {
+    color: #777;
+    font-size: 11px;
+}
+
+textarea {
+    width: 100%;
+    height: 260px;
+    resize: vertical;
+    background: #0d0d11;
+    color: #a9e6bb;
+    border: none;
+    outline: none;
+    padding: 20px;
+    font-family: Consolas, monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    tab-size: 4;
+}
+
+textarea::placeholder {
+    color: #555;
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+    padding: 15px;
+    border-top: 1px solid #26262d;
+}
+
+.action-btn {
+    padding: 11px 17px;
+    border-radius: 7px;
+    border: 1px solid #33333b;
+    background: #202027;
+    color: white;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.action-btn.primary {
+    background: #ff7a24;
+    border-color: #ff7a24;
+    color: black;
+    font-weight: bold;
+}
+
+.action-btn:hover {
+    filter: brightness(1.2);
+}
+
+footer {
+    text-align: center;
+    color: #555;
+    font-size: 11px;
+    margin-top: 25px;
+}
+
+@media(max-width: 600px) {
     body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: Arial, sans-serif;
-      background: #101014;
-      color: white;
+        padding: 12px;
     }
 
-    header {
-      padding: 20px;
-      text-align: center;
-      background: #17171d;
-      border-bottom: 1px solid #33333d;
-    }
-
-    header h1 {
-      margin: 0;
-      color: #00d9ff;
-      font-size: 28px;
-    }
-
-    header p {
-      margin: 8px 0 0;
-      color: #aaa;
-    }
-
-    .app {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      min-height: calc(100vh - 100px);
-    }
-
-    .editor-section,
-    .preview-section {
-      padding: 24px;
-    }
-
-    .editor-section {
-      background: #121218;
-      border-right: 1px solid #33333d;
-    }
-
-    .preview-section {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      background: radial-gradient(circle, #24243a, #101014 70%);
-    }
-
-    h2 {
-      margin-top: 0;
-      color: #00d9ff;
+    .preview {
+        height: 280px;
     }
 
     textarea {
-      width: 100%;
-      height: 430px;
-      resize: vertical;
-      padding: 16px;
-      border: 1px solid #3e3e4b;
-      border-radius: 12px;
-      outline: none;
-      background: #09090d;
-      color: #b8f5ff;
-      font-family: Consolas, monospace;
-      font-size: 15px;
-      line-height: 1.5;
+        height: 220px;
     }
-
-    textarea:focus {
-      border-color: #00d9ff;
-      box-shadow: 0 0 15px #00d9ff44;
-    }
-
-    .preview-box {
-      width: min(420px, 90%);
-      min-height: 300px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 30px;
-      border: 2px dashed #55556b;
-      border-radius: 18px;
-    }
-
-    .design-card {
-      width: 230px;
-      padding: 28px 20px;
-      text-align: center;
-      border-radius: 22px;
-      background: linear-gradient(135deg, #00d9ff, #6c2cff);
-      box-shadow: 0 15px 35px #0008;
-      transition: 0.3s ease;
-    }
-
-    .design-card:hover {
-      transform: translateY(-10px) rotate(2deg);
-      box-shadow: 0 20px 45px #00d9ff66;
-    }
-
-    .design-card h3 {
-      margin: 0 0 12px;
-      font-size: 24px;
-    }
-
-    .design-card p {
-      margin: 0 0 20px;
-      color: #e9faff;
-    }
-
-    .design-card button {
-      padding: 12px 18px;
-      border: none;
-      border-radius: 999px;
-      background: white;
-      color: #17171d;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.3s ease;
-    }
-
-    .design-card button:hover {
-      transform: scale(1.1);
-      background: #111;
-      color: white;
-    }
-
-    .status {
-      margin-top: 16px;
-      color: #7dffb2;
-      font-size: 14px;
-    }
-
-    @media (max-width: 800px) {
-      .app {
-        grid-template-columns: 1fr;
-      }
-
-      .editor-section {
-        border-right: none;
-        border-bottom: 1px solid #33333d;
-      }
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <h1>Live CSS Design Viewer</h1>
-    <p>Edit the CSS and watch the design update automatically.</p>
-  </header>
-  <main class="app">
-    <section class="editor-section">
-      <h2>CSS Editor</h2>
-  <textarea id="cssEditor">.design-card {
-
-background: linear-gradient(135deg, #00d9ff, #6c2cff);
-border-radius: 22px;
-transform: rotate(0deg);
 }
-.design-card:hover {
-transform: translateY(-10px) rotate(2deg);
-box-shadow: 0 20px 45px #00d9ff66;
-}</textarea>
-  <div class="status" id="status">
-    Preview updates automatically
-  </div>
-</section>
+</style>
+</head>
 
-<section class="preview-section">
-  <h2>Live Preview</h2>
+<body>
 
-  <div class="preview-box">
-    <div class="design-card">
-      <h3>Cool CSS</h3>
-      <p>Hover over me!</p>
-      <button>Click Me</button>
+<div class="container">
+
+<header>
+    <div class="logo">CSS<span>LAB</span></div>
+    <div class="tag">BUTTON SANDBOX v1.0</div>
+</header>
+
+<div class="preview">
+
+    <div class="preview-label">Live Preview</div>
+
+    <button id="demoButton">
+        Click Me
+    </button>
+
+</div>
+
+<div class="editor">
+
+    <div class="editor-header">
+        <span>CSS Editor</span>
+        <small>AUTO PREVIEW ENABLED</small>
     </div>
-  </div>
-</section>
 
-  </main>
-  <style id="liveStyles"></style>
-  <script>
-    const cssEditor = document.getElementById("cssEditor");
-    const liveStyles = document.getElementById("liveStyles");
-    const status = document.getElementById("status");
+    <textarea
+        id="cssEditor"
+        spellcheck="false"
+        placeholder="/* Add your button CSS here */
 
-    function updatePreview() {
-      liveStyles.textContent = cssEditor.value;
-      status.textContent = "Preview updated automatically ✓";
+#demoButton {
+    
+}"></textarea>
+
+    <div class="actions">
+
+        <button class="action-btn primary"
+            onclick="copyCSS()">
+            Copy CSS
+        </button>
+
+        <button class="action-btn"
+            onclick="resetCSS()">
+            Reset
+        </button>
+
+    </div>
+
+</div>
+
+<footer>
+    CSSLAB · CREATE SOMETHING COOL
+</footer>
+
+</div>
+
+<style id="customCSS"></style>
+
+<script>
+
+const editor = document.getElementById("cssEditor");
+const customCSS = document.getElementById("customCSS");
+
+function updatePreview() {
+    customCSS.textContent = editor.value;
+}
+
+editor.addEventListener("input", updatePreview);
+
+async function copyCSS() {
+    try {
+        await navigator.clipboard.writeText(editor.value);
+        alert("CSS copied!");
+    } catch {
+        editor.select();
+        document.execCommand("copy");
+        alert("CSS copied!");
     }
+}
 
-    cssEditor.addEventListener("input", updatePreview);
-
+function resetCSS() {
+    editor.value = "";
     updatePreview();
-  </script>
+}
+
+</script>
+
 </body>
 </html>
